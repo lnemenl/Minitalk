@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/25 15:13:29 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/25 15:47:03 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 void	signal_handler(int signum)
 {
+	
 	if (signum == SIGUSR1)
 		write(1, "Received SIGUSR1 (0)\n", 21);
 	else if (signum == SIGUSR2)
