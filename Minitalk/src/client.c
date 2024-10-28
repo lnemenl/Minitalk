@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/28 14:49:53 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:55:57 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,15 @@ void	send_char(pid_t server_pid, char c)
 	while (bit >= 0)
 	{
 		if ((c >> bit) & 1)
-			kill(server_pid, SIGUSR2);
+		{
+			if (kill(server_pid, SIGUSR2) == -1)
+				handle_error("Error: Failed to send SIGUSR2");
+		}
 		else
-			kill(server_pid, SIGUSR1);
+		{
+			if (kill(server_pid, SIGUSR1) == -1)
+				handle_error("Error: Failed to send SIGUSR1");
+		}
 		usleep(100);
 		bit--;
 	}
@@ -44,7 +50,8 @@ void	send_end_of_message(pid_t server_pid)
 	
 	while (i < 8)
 	{
-		kill(server_pid, SIGUSR1);
+		if (kill(server_pid, SIGUSR1) == -1)
+			handle_error("Error: Failed to send end-of-message signal");
 		usleep(100);
 		i++;
 	}
@@ -56,12 +63,10 @@ int	main(int ac, char **av)
 	char	*message;
 	
 	if (ac != 3)
-	{
-		write(2, "Usage: ./client <server_pid> <message>\n", 39);
-		return (1);
-	}
-	
+		handle_error("Usage: ./client <server_pid> <message>");
 	server_pid = ft_atoi(av[1]);
+	if (server_pid <= 0)
+		handle_error("Error: Invalid PID");
 	message = av[2];
 	while(*message)
 	{

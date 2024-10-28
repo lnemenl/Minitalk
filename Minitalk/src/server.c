@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/28 14:49:07 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:00:53 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ void	signal_handler(int signum)
 
 int	main(void)
 {
-	ft_printf("Server PID: %d\n", getpid());
+	pid_t	pid;
+	
+	pid = getpid();
+	if (pid <= 0)
+		handle_error("Error: Unable to receive PID");
+	ft_printf("Server PID: %d\n", pid);
 	signal(SIGUSR1, signal_handler);
 	signal(SIGUSR2, signal_handler);
 	while (1)
