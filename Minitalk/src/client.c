@@ -6,13 +6,20 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/28 13:25:47 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:49:53 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <signal.h>
 #include <unistd.h>
 #include "libft.h"
+
+void	handle_error(const char *error_message)
+{
+	write(2, error_message, ft_strlen(error_message));
+	write(2, "\n", 1);
+	exit(1);
+}
 
 void	send_char(pid_t server_pid, char c)
 {
@@ -25,8 +32,21 @@ void	send_char(pid_t server_pid, char c)
 			kill(server_pid, SIGUSR2);
 		else
 			kill(server_pid, SIGUSR1);
-		usleep(500);
+		usleep(100);
 		bit--;
+	}
+}
+
+void	send_end_of_message(pid_t server_pid)
+{
+	int	i;
+	i = 0;
+	
+	while (i < 8)
+	{
+		kill(server_pid, SIGUSR1);
+		usleep(100);
+		i++;
 	}
 }
 
@@ -48,5 +68,6 @@ int	main(int ac, char **av)
 		send_char(server_pid, *message);
 		message++;
 	}
+	send_end_of_message(server_pid);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/28 13:48:16 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:49:07 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 #include <unistd.h>
 #include "libft.h"
 #include "ft_printf.h"
+
+void	handle_error(const char *error_message)
+{
+	write(2, error_message, ft_strlen(error_message));
+	write(2, "\n", 1);
+	exit(1);
+}
 
 void	signal_handler(int signum)
 {
@@ -25,10 +32,12 @@ void	signal_handler(int signum)
 	else if (signum == SIGUSR2)
 		current_char = (current_char << 1) | 1;
 	bit_count++;
-
 	if (bit_count == 8)
 	{
-		write(1, &current_char, 1);
+		if (current_char == '\0')
+			write(1, "\n", 1);
+		else
+			write(1, &current_char, 1);
 		bit_count = 0;
 		current_char = 0;
 	}
@@ -43,4 +52,3 @@ int	main(void)
 		pause();
 	return (0);
 }
-
