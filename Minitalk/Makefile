@@ -6,7 +6,7 @@
 #    By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/25 13:28:28 by rkhakimu          #+#    #+#              #
-#    Updated: 2024/10/25 15:12:41 by rkhakimu         ###   ########.fr        #
+#    Updated: 2024/10/28 19:13:54 by rkhakimu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ CC			= cc
 CFLAGS		= -Wall -Werror -Wextra -I./lib/Libft
 LIBFT		= ./lib/Libft/libft.a
 
-SRC_CLIENT	= src/client.c
-SRC_SERVER	= src/server.c
+SRC_CLIENT  = src/client.c src/handle_error.c
+SRC_SERVER  = src/server.c src/handle_error.c
 OBJ_CLIENT	= $(SRC_CLIENT:.c=.o)
 OBJ_SERVER	= $(SRC_SERVER:.c=.o)
 

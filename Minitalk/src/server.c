@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/28 15:00:53 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:11:22 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-void	handle_error(const char *error_message)
-{
-	write(2, error_message, ft_strlen(error_message));
-	write(2, "\n", 1);
-	exit(1);
-}
+void	handle_error(const char *error_message);
 
 void	signal_handler(int signum)
 {
@@ -46,7 +41,7 @@ void	signal_handler(int signum)
 int	main(void)
 {
 	pid_t	pid;
-	
+
 	pid = getpid();
 	if (pid <= 0)
 		handle_error("Error: Unable to receive PID");
