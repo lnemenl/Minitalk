@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/30 00:09:05 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:45:31 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	send_char(pid_t server_pid, char c)
 			if (kill(server_pid, SIGUSR1) == -1)
 				handle_error("Error: Failed to send SIGUSR1");
 		}
-		usleep(170);
+		usleep(60);
 		bit--;
 	}
 }
@@ -47,7 +47,7 @@ void	send_end_of_message(pid_t server_pid)
 	{
 		if (kill(server_pid, SIGUSR1) == -1)
 			handle_error("Error: Failed to send end-of-message signal");
-		usleep(100);
+		usleep(10);
 		i++;
 	}
 }
