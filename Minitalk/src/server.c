@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/01 05:13:19 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/01 08:32:38 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	signal_handler(int signum, siginfo_t *info, void *ucontext)
 	static int	bit_count;
 	static char	current_char;
 	pid_t		client_pid;
-	(void)ucontext;
 
+	(void)ucontext;
 	client_pid = info->si_pid;
 	current_char = (current_char << 1) | (signum == SIGUSR2);
 	bit_count++;
@@ -37,12 +37,13 @@ void	signal_handler(int signum, siginfo_t *info, void *ucontext)
 		current_char = 0;
 	}
 	if (kill(client_pid, SIGUSR1) == -1)
-		handle_error("Error: Failed to send acknowledgment to client");	
+		handle_error("Error: Failed to send acknowledgment to client");
 }
 
 int	main(void)
 {
-	struct sigaction act;
+	struct sigaction	act;
+
 	ft_printf("Server PID: %d\n", getpid());
 	sigemptyset(&act.sa_mask);
 	act.sa_sigaction = signal_handler;
