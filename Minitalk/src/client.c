@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/10/30 17:45:31 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/01 05:12:47 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,49 @@
 #include <unistd.h>
 #include "libft.h"
 
+volatile sig_atomic_t ack_received = 0;
+
 void	handle_error(const char *error_message);
+
+void	ack_handler(int signum)
+{
+	if (signum == SIGUSR1)
+		ack_received = 1;
+}
+
+void	send_bit(pid_t server_pid, int bit)
+{
+	ack_received = 0;
+	if (bit)
+	{
+		if (kill(server_pid, SIGUSR2) == -1)
+			handle_error("Error: Failed to send SIGUSR2");
+	}
+	else
+	{
+		if (kill(server_pid, SIGUSR1) == -1)
+			handle_error("Error: Failed to send SIGUSR1");
+	}
+	while (!ack_received)
+		usleep(50);
+}
 
 void	send_char(pid_t server_pid, char c)
 {
 	int	bit;
-
 	bit = 7;
 	while (bit >= 0)
 	{
-		if ((c >> bit) & 1)
-		{
-			if (kill(server_pid, SIGUSR2) == -1)
-				handle_error("Error: Failed to send SIGUSR2");
-		}
-		else
-		{
-			if (kill(server_pid, SIGUSR1) == -1)
-				handle_error("Error: Failed to send SIGUSR1");
-		}
-		usleep(60);
+		send_bit(server_pid, (c >> bit) & 1);
 		bit--;
-	}
-}
-
-void	send_end_of_message(pid_t server_pid)
-{
-	int	i;
-
-	i = 0;
-	while (i < 8)
-	{
-		if (kill(server_pid, SIGUSR1) == -1)
-			handle_error("Error: Failed to send end-of-message signal");
-		usleep(10);
-		i++;
 	}
 }
 
 int	main(int ac, char **av)
 {
 	pid_t	server_pid;
-	char	*message;
 	int		i;
+	struct sigaction act;
 
 	i = 0;
 	if (ac < 3)
@@ -64,13 +64,16 @@ int	main(int ac, char **av)
 	server_pid = ft_atoi(av[1]);
 	if (server_pid <= 0)
 		handle_error("Error: Invalid PID");
-	message = av[2];
-	while (message[i])
+	sigemptyset(&act.sa_mask);
+	act.sa_handler = ack_handler;
+	act.sa_flags = SA_RESTART;
+	if (sigaction(SIGUSR1, &act, NULL) == -1)
+		handle_error("Error: Failed to set acknowledgement handler");
+	while (av[2][i] != '\0')
 	{
-		send_char(server_pid, message[i]);
+		send_char(server_pid, av[2][i]);
 		i++;
 	}
-	send_end_of_message(server_pid);
-	usleep(100000);
+	send_char(server_pid, '\0');
 	return (0);
 }
