@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/01 09:18:36 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/04 06:43:37 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	main(int ac, char **av)
 	act.sa_flags = SA_RESTART;
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
 		handle_error("Error: Failed to set acknowledgement handler");
+	if (kill(server_pid, 0) == -1)
+		handle_error("Error: Invalid server PID");
 	while (av[2][i] != '\0')
 	{
 		send_char(server_pid, av[2][i]);
