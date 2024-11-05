@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/04 13:28:32 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/05 10:41:47 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	expand_buffer(char **buffer, int *size, char c)
 
 void	process_character(int signum, char **buffer, int *bit_count, int *size)
 {
-	static char	current_char = 0;
+	static char	current_char;
 
 	current_char = (current_char << 1) | (signum == SIGUSR2);
 	*bit_count += 1;
@@ -63,9 +63,9 @@ void	process_character(int signum, char **buffer, int *bit_count, int *size)
 
 void	signal_handler(int signum, siginfo_t *info, void *ucontext)
 {
-	static char	*msg_buffer = NULL;
-	static int	bit_count = 0;
-	static int	buffer_size = 0;
+	static char	*msg_buffer;
+	static int	bit_count;
+	static int	buffer_size;
 
 	(void)ucontext;
 	process_character(signum, &msg_buffer, &bit_count, &buffer_size);
