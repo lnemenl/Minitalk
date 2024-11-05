@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:46 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/05 13:10:16 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/05 17:53:13 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	send_bit(pid_t server_pid, int bit)
 			handle_error("Error: Failed to send signal", NULL);
 	}
 	while (!g_acknowledgment_received)
-		usleep(100);
+		usleep(1);
 }
 
 void	send_char(pid_t server_pid, char c)
