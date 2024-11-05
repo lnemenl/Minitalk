@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/05 12:02:32 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:18:32 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+volatile sig_atomic_t current_client_pid = 0;
 void	handle_error(const char *error_message, char **buffer);
 
 void	expand_buffer(char **buffer, int *size, char c)
@@ -63,26 +64,22 @@ void	process_character(int signum, char **buffer, int *bit_count, int *size)
 
 void	signal_handler(int signum, siginfo_t *info, void *ucontext)
 {
-	static char		*msg_buffer;
-	static int		bit_count;
-	static int		buffer_size;
-	static pid_t	current_client_pid;
+	static char		*msg_buffer = NULL;
+	static int		bit_count = 0;
+	static int		buffer_size = 0;
 
 	(void)ucontext;
-	if (current_client_pid != 0 && current_client_pid != info->si_pid)
-		return ;
 	if (current_client_pid == 0)
 		current_client_pid = info->si_pid;
+	else if (current_client_pid != info->si_pid)
+		return ;
 	process_character(signum, &msg_buffer, &bit_count, &buffer_size);
 	if (kill(info->si_pid, SIGUSR1) == -1)
 		ft_printf("Warning: Failed to send acknowledgment\n");
-	if (bit_count == 0 && msg_buffer != NULL && msg_buffer[buffer_size - 1] == '\0')
+	if (msg_buffer == NULL)
 	{
-		ft_printf("%s\n", msg_buffer);
-		free(msg_buffer);
-		msg_buffer = NULL;
-		buffer_size = 0;
 		current_client_pid = 0;
+		buffer_size = 0;
 	}
 }
 
