@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/05 14:18:32 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:19:37 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-volatile sig_atomic_t current_client_pid = 0;
+volatile sig_atomic_t	g_current_client_pid = 0;
 void	handle_error(const char *error_message, char **buffer);
 
 void	expand_buffer(char **buffer, int *size, char c)
