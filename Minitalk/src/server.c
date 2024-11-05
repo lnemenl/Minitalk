@@ -6,7 +6,7 @@
 /*   By: rkhakimu <rkhakimu@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 17:29:40 by rkhakimu          #+#    #+#             */
-/*   Updated: 2024/11/05 14:21:03 by rkhakimu         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:15:44 by rkhakimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	signal_handler(int signum, siginfo_t *info, void *ucontext)
 		return ;
 	process_character(signum, &msg_buffer, &bit_count, &buffer_size);
 	if (kill(info->si_pid, SIGUSR1) == -1)
-		ft_printf("Warning: Failed to send acknowledgment\n");
+		handle_error("Warning: Failed to send acknowledgment\n", &msg_buffer);
 	if (msg_buffer == NULL)
 	{
 		g_current_client_pid = 0;
