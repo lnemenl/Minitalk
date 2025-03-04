@@ -32,8 +32,8 @@ Welcome to **Minitalk**, a lightweight client-server communication system crafte
 ## Installation
 1. Clone the repo:
    ```bash
-   git clone https://github.com/lnemenl/minitalk.git
-   cd minitalk
+   git clone https://github.com/lnemenl/Minitalk.git
+   cd Minitalk/Minitalk
    ```
 2. Compile it:
    ```bash
