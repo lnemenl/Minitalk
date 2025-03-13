@@ -3,13 +3,8 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/ayogun/42-project-badges/refs/heads/main/covers/cover-minitalk-bonus.png" alt="Minitalk Cover">
 </p>
+<img src="https://img.shields.io/badge/Score-125%2F125-brightgreen" alt="Score Badge">
 
----
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/ayogun/42-project-badges/refs/heads/main/badges/minitalkm.png" alt="Minitalk Badge">
-  <img src="https://img.shields.io/badge/Score-125%2F125-brightgreen" alt="Score Badge">
-</p>
 
 *A signal-based communication program that transmits messages bit by bit.*
 
